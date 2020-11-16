@@ -11,7 +11,7 @@ import SwiftUI
 struct AgeOfDetailsApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            LeaderboardTabBar()
         }
     }
 }
