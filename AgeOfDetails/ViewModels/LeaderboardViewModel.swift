@@ -18,7 +18,7 @@ public class LeaderboardViewModel
     @Published var players: [PlayerViewModel] = []
     
     private var playerCount = 0
-    private var id: Int
+    var id: Int
     
     init(id: Int) {
         self.id = id
@@ -36,15 +36,15 @@ public class LeaderboardViewModel
               }, receiveValue: { [weak self] leaderboard in
                 guard let self = self else { return }
                 self.leaderboard = leaderboard
-                leaderboard.leaderboard.forEach() { player in
-                    self.players.append(PlayerViewModel(player: player))
+                leaderboard.players.forEach() { player in
+                self.players.append(PlayerViewModel(player: player))
+                self.playerCount += leaderboard.players.count
                 }
-                self.playerCount += 10
             })
             .store(in: &subscriptions)
     }
 }
 
 enum Constants {
-    static let fetch = 10
+    static let fetch = 100
 }

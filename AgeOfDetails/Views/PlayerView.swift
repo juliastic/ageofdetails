@@ -13,7 +13,8 @@ struct PlayerView: View {
     @ViewBuilder
     var body: some View {
         VStack(alignment: .leading) {
-            Text(viewModel.player.name)
+            Text("\(viewModel.player.rank) " + viewModel.player.name)
+            Text(viewModel.player.country?.flag() ?? "")
         }
     }
 }

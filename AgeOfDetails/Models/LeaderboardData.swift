@@ -12,13 +12,13 @@ struct LeaderboardData: Codable, Hashable {
     let id: Int
     let start: Int
     let count: Int
-    let leaderboard: [Player]
+    let players: [Player]
     
     private enum CodingKeys: String, CodingKey {
         case total
         case id = "leaderboard_id"
         case start
         case count
-        case leaderboard
+        case players = "leaderboard"
     }
 }

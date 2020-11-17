@@ -21,9 +21,11 @@ struct LeaderboardView: View {
                 })
         } else if let error = viewModel.error {
             Label(error.description, systemImage: "exclamationmark.triangle")
-        } else if let leaderboard = viewModel.leaderboard {
-            List(leaderboard.leaderboard) { player in
-              PlayerView(viewModel: PlayerViewModel(player: player))
+        } else {
+            List(viewModel.players) { playerViewModel in
+                NavigationLink(destination: PlayerDetailView(viewModel: playerViewModel)) {
+                    PlayerView(viewModel: playerViewModel)
+                }
             }
         }
     }
