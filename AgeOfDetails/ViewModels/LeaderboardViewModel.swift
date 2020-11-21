@@ -8,8 +8,7 @@
 import Foundation
 import Combine
 
-public class LeaderboardViewModel
-: ObservableObject {
+public class LeaderboardViewModel: ObservableObject {
     var subscriptions: Set<AnyCancellable> = []
     
     @Published var leaderboard: LeaderboardData?
@@ -18,13 +17,13 @@ public class LeaderboardViewModel
     @Published var players: [PlayerViewModel] = []
     
     private var playerCount = 0
-    var id: Int
+    let id: Int
     
     init(id: Int) {
         self.id = id
     }
     
-    func reload() {
+    func loadData() {
         AoENet.instance.loadLeadboard(start: playerCount, count: Constants.fetch, id: id)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] value in
@@ -37,7 +36,7 @@ public class LeaderboardViewModel
                 guard let self = self else { return }
                 self.leaderboard = leaderboard
                 leaderboard.players.forEach() { player in
-                self.players.append(PlayerViewModel(player: player))
+                    self.players.append(PlayerViewModel(player: player, leaderboardId: self.id))
                 self.playerCount += leaderboard.players.count
                 }
             })

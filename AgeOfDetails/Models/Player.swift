@@ -9,6 +9,7 @@ import Foundation
 
 struct Player: Codable, Hashable, Identifiable {
     let id: Int
+    let steamId: String
     let rank: Int
     let rating: Int
     let name: String
@@ -24,6 +25,7 @@ struct Player: Codable, Hashable, Identifiable {
     
     private enum CodingKeys: String, CodingKey {
         case id = "profile_id"
+        case steamId = "steam_id"
         case rank
         case rating
         case name

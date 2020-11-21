@@ -12,9 +12,11 @@ struct PlayerView: View {
     
     @ViewBuilder
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("\(viewModel.player.rank) " + viewModel.player.name)
-            Text(viewModel.player.country?.flag() ?? "")
-        }
+        HStack {
+            VStack(alignment: .leading) {
+                Text("\(viewModel.player.rank) " + viewModel.player.name)
+                Text(viewModel.player.country?.flag() ?? "")
+            }.padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
+        }.padding(.vertical)
     }
 }

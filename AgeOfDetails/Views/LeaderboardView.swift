@@ -12,21 +12,43 @@ struct LeaderboardView: View {
     
     @ViewBuilder
     var body: some View {
-        if viewModel.loading {
-            ProgressView()
-                .onAppear(perform: {
-                    if viewModel.loading {
-                        viewModel.reload()
+        GeometryReader { geometry in
+            if viewModel.loading {
+                ProgressView()
+                    .onAppear(perform: {
+                        if viewModel.loading {
+                            viewModel.loadData()
+                        }
+                    }).frame(width: geometry.size.width, height: geometry.size.height, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+            } else if let error = viewModel.error {
+                Label(error.description, systemImage: "exclamationmark.triangle")
+            } else {
+                playerScrollView
+            }
+        }
+    }
+    
+    var playerScrollView: some View {
+        GeometryReader { geometry in
+            ScrollView {
+                ForEach(viewModel.players) { playerViewModel in
+                    NavigationLink(destination: PlayerDetailView(viewModel: playerViewModel)) {
+                        VStack {
+                            VStack {
+                                PlayerView(viewModel: playerViewModel)
+                                    .frame(width: geometry.size.width, alignment: .leading)
+                            }
+                            .frame(width: geometry.size.width, height: 70, alignment: .leading)
+                            .background(Color.green)
+                            .cornerRadius(10)
+                            Divider()
+                                .background(Color.black)
+                                .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
+                        }
                     }
-                })
-        } else if let error = viewModel.error {
-            Label(error.description, systemImage: "exclamationmark.triangle")
-        } else {
-            List(viewModel.players) { playerViewModel in
-                NavigationLink(destination: PlayerDetailView(viewModel: playerViewModel)) {
-                    PlayerView(viewModel: playerViewModel)
                 }
             }
+            .cornerRadius(10)
         }
     }
 }
