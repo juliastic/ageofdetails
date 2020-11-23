@@ -23,8 +23,8 @@ class AoENet {
         return loadAoESingleData(for: LeaderboardData.self)
     }
     
-    func loadMatchHistory(for steamId: String, count: Int) -> AnyPublisher<[PlayerMatchHistory], AoENetError> {
-        buildMatchHistoryURL(start: 1, count: count, steamId: steamId)
+    func loadMatchHistory(for id: String, useSteamId: Bool, start: Int, count: Int) -> AnyPublisher<[PlayerMatchHistory], AoENetError> {
+        buildMatchHistoryURL(start: start, count: count, id: id, useSteamId: useSteamId)
         return loadAoEMultipleData(for: PlayerMatchHistory.self)
     }
     
@@ -67,13 +67,13 @@ class AoENet {
             URLQueryItem(name: "count", value: "\(count)")]
     }
     
-    private func buildMatchHistoryURL(start: Int, count: Int, steamId: String) {
+    private func buildMatchHistoryURL(start: Int, count: Int, id: String, useSteamId: Bool) {
         urlComponents.path = "/api/player/matches"
         urlComponents.queryItems = [
             URLQueryItem(name: "game", value: "aoe2de"),
-            URLQueryItem(name: "start", value: "1"),
+            URLQueryItem(name: "start", value: "\(start)"),
             URLQueryItem(name: "count", value: "\(count)"),
-            URLQueryItem(name: "steam_id", value: steamId)
+            URLQueryItem(name: useSteamId ? "steam_id" : "profile_id", value: id)
         ]
     }
 }

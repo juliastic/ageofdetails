@@ -13,10 +13,10 @@ extension String {
      */
     func flag() -> String {
         let base : UInt32 = 127397
-            var flag = ""
-            for v in self.uppercased().unicodeScalars {
-                flag.unicodeScalars.append(UnicodeScalar(base + v.value)!)
-            }
+        var flag = ""
+        for v in self.uppercased().unicodeScalars {
+            flag.unicodeScalars.append(UnicodeScalar(base + v.value)!)
+        }
         return flag
     }
 }

@@ -31,12 +31,21 @@ struct PlayerDetailView: View {
                                 viewModel.loadData()
                             }
                         })
-                        .alignmentGuide(VerticalAlignment.center, computeValue: { $0[.bottom] })
-                        .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
+                        .alignmentGuide(HorizontalAlignment.center, computeValue: { $0[.bottom] })
+                        .frame(width: geometry.size.width, height: geometry.size.height, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
                 } else if let error = viewModel.error {
                     Label(error.description, systemImage: "exclamationmark.triangle")
                 } else {
-                    barView
+                    if viewModel.playerMatchHistory.isEmpty {
+                        Text("No recent matches have been found").font(.system(size: 20, weight: .bold, design: .default))
+                    } else {
+                        Text("Recent Ratings").font(.system(size: 20, weight: .bold, design: .default))
+                        GeometryReader { reader in
+                            PlayerChartLine(viewModel: viewModel, frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width - 60, height: reader.frame(in: .local).height - 10)))
+                        }
+                        .frame(width: geometry.frame(in: .local).size.width, height: 250)
+                        .padding(.horizontal)
+                    }
                 }
             }
             .navigationBarTitle(viewModel.player.name)
@@ -47,33 +56,12 @@ struct PlayerDetailView: View {
     var winrateView: some View {
         ZStack(alignment: .leading) {
             Rectangle()
-                 .foregroundColor(Color.red)
-                 .opacity(0.3)
+                .foregroundColor(Color.red)
+                .opacity(0.3)
                 .frame(width: 345.0, height: 20.0)
             Rectangle()
                 .foregroundColor(Color.green)
                 .frame(width: 345.0 * CGFloat(winrate), height: 20.0)
-        }.padding(EdgeInsets(top: 10, leading: 5, bottom: 10, trailing: 5))
-    }
-    
-    var barView: some View {
-        HStack {
-            ForEach(viewModel.filteredPlayerMatchHistory, id: \.self) { matchPlayer in
-                VStack {
-                    Spacer()
-                    Rectangle()
-                        .fill(Color.green)
-                        .frame(width: 20, height: barHeight(for: matchPlayer.rating))
-                    Text("\(matchPlayer.rating ?? 0)")
-                        .font(.footnote)
-                        .frame(height: 20)
-                    
-                }
-            }
-        }.padding(.horizontal)
-    }
-    
-    func barHeight(for value: Int?) -> CGFloat {
-        return CGFloat((Double(value ?? 0) / viewModel.averageMatchRating()) * 10)
+        }
     }
 }

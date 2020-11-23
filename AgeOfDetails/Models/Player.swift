@@ -9,7 +9,7 @@ import Foundation
 
 struct Player: Codable, Hashable, Identifiable {
     let id: Int
-    let steamId: String
+    let steamId: String?
     let rank: Int
     let rating: Int
     let name: String

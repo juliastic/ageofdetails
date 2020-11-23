@@ -24,8 +24,9 @@ struct LeaderboardView: View {
                 Label(error.description, systemImage: "exclamationmark.triangle")
             } else {
                 playerScrollView
+                    .padding(10)
             }
-        }
+        }.navigationTitle(LeaderboardCategory(rawValue: viewModel.id)?.name ?? "")
     }
     
     var playerScrollView: some View {

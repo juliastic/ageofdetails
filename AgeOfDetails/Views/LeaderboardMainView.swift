@@ -8,28 +8,39 @@
 import SwiftUI
 
 struct LeaderboardMainView: View {
-    @State private var currentId: Int = 0
-
     var body: some View {
         NavigationView {
-            VStack(spacing: 10) {
-                HStack {
-                    Menu("Leaderboards") {
-                        ForEach(LeaderboardCategory.allCases) { category in
-                            Button(category.name) {
-                                currentId = category.id
+            leaderboardScrollView
+                .padding(/*@START_MENU_TOKEN@*/10/*@END_MENU_TOKEN@*/)
+                .navigationTitle("Age of Details")
+        }.navigationViewStyle(StackNavigationViewStyle())
+    }
+    
+    var leaderboardScrollView: some View {
+        GeometryReader { geometry in
+            ScrollView {
+                ForEach(LeaderboardCategory.allCases) { category in
+                    NavigationLink(destination: LeaderboardView(viewModel: LeaderboardViewModel(id: category.id))) {
+                        VStack {
+                            VStack(alignment: .leading) {
+                                Text(category.name)
+                                    .font(.system(size: 20, weight: .bold, design: .default))
+                                Text(category.description)
+                                    .font(.system(size: 16, weight: .light, design: .default))
                             }
+                            .modifier(CellViewModifier())
+                            .frame(width: geometry.size.width, height: 100, alignment: .leading)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(Color.black, lineWidth: 1))
+                            Divider()
+                                .background(Color.black)
+                                .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
                         }
                     }
-                    Menu("Views") {
-                        Button("Clasic View", action: {})
-                        Button("Map View", action: {})
-                    }
-                }.padding(EdgeInsets(top: CGFloat(10), leading: CGFloat(0), bottom: CGFloat(0), trailing: CGFloat(0)))
-                LeaderboardView(viewModel: LeaderboardViewModel(id: currentId))
+                }
             }
-            .padding()
-            .navigationTitle(LeaderboardCategory(rawValue: currentId)!.name)
+            .cornerRadius(10)
         }
     }
 }

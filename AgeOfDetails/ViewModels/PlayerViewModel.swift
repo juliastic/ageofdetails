@@ -18,6 +18,10 @@ public class PlayerViewModel: ObservableObject, Identifiable {
     
     let player: Player
     let leaderboardId: Int
+    
+    var filteredRatings: [Double] {
+        return filteredPlayerMatchHistory.map { matchPlayer in Double(matchPlayer.rating ?? 0) }
+    }
         
     init(player: Player, leaderboardId: Int) {
         self.player = player
@@ -25,7 +29,7 @@ public class PlayerViewModel: ObservableObject, Identifiable {
     }
     
     func loadData() {
-        AoENet.instance.loadMatchHistory(for: player.steamId, count: 10)
+        AoENet.instance.loadMatchHistory(for: player.steamId ?? "\(player.id)", useSteamId: player.steamId != nil, start: 0, count: 30)
             .receive(on: DispatchQueue.main)
             .map { playerMatchHistories in
                 playerMatchHistories.filter { $0.leaderboardId == self.leaderboardId }
@@ -39,16 +43,13 @@ public class PlayerViewModel: ObservableObject, Identifiable {
               }, receiveValue: { [weak self] playerMatchHistory in
                 guard let self = self else { return }
                 self.playerMatchHistory = playerMatchHistory
-                self.filteredPlayerMatchHistory = playerMatchHistory.map { match in
-                    match.players.filter { $0.id == self.player.id }[0]
+                if (self.playerMatchHistory.count > 10) {
+                    self.playerMatchHistory.removeSubrange(10...self.playerMatchHistory.count - 1)
+                }
+                self.filteredPlayerMatchHistory = self.playerMatchHistory.map { match in
+                    match.players.filter { $0.id == self.player.id || $0.steamId == self.player.steamId }[0]
                 }
             })
             .store(in: &subscriptions)
-    }
-    
-    func averageMatchRating() -> Double {
-        var sum = 0.0
-        filteredPlayerMatchHistory.forEach { match in sum += Double(match.rating ?? 0) }
-        return sum / Double(filteredPlayerMatchHistory.count)
     }
 }

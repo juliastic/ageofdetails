@@ -27,4 +27,14 @@ enum LeaderboardCategory: Int, CaseIterable, Identifiable {
         case .teamrandommap: return "Team Random Map"
         }
     }
+    
+    var description: String {
+        switch self {
+        case .unranked: return "Unkranked Fun"
+        case .singledeathmatch: return "Life and Death"
+        case .teamdeathmatch: return "Life and Death Team Edition"
+        case .singlerandommap: return "Life's random, solo edition"
+        case .teamrandommap: return "Life's random, team edition"
+        }
+    }
 }
