@@ -19,39 +19,43 @@ struct PlayerDetailView: View {
     
     @ViewBuilder
     var body: some View {
-        ScrollView {
-            GeometryReader { geometry in
-                VStack(alignment: .leading) {
-                    Text(viewModel.player.name + " " + (viewModel.player.country ?? "").flag())
-                    Text("\(winrate * 100)%")
-                    winrateView
-                    if viewModel.loading {
-                        ProgressView()
-                            .onAppear(perform: {
-                                if viewModel.loading {
-                                    viewModel.loadData()
-                                }
-                            })
-                            .alignmentGuide(HorizontalAlignment.center, computeValue: { $0[.bottom] })
-                            .frame(width: geometry.size.width, height: geometry.size.height, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-                    } else if let error = viewModel.error {
-                        Label(error.description, systemImage: "exclamationmark.triangle")
-                    } else {
-                        if viewModel.ratingHistory.isEmpty {
-                            Text("No recent ratings have been found").font(.system(size: 20, weight: .bold, design: .default))
+        GeometryReader { geometry in
+            ScrollView(.vertical) {
+                    VStack(alignment: .leading) {
+                        Text(viewModel.player.name + " " + (viewModel.player.country ?? "").flag())
+                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
+                        Text("\(winrate * 100)%")
+                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
+                        winrateView
+                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
+                        if viewModel.loading {
+                            ProgressView()
+                                .onAppear(perform: {
+                                    if viewModel.loading {
+                                        viewModel.loadData()
+                                    }
+                                })
+                                .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
+                        } else if let error = viewModel.error {
+                            Label(error.description, systemImage: "exclamationmark.triangle")
                         } else {
-                            Text("Recent Ratings").font(.system(size: 20, weight: .bold, design: .default))
-                            GeometryReader { reader in
-                                PlayerChartLine(viewModel: viewModel, frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width - 60, height: reader.frame(in: .local).height - 20)))
+                            if viewModel.ratingHistory.isEmpty {
+                                Text("No recent ratings have been found")
+                                    .font(.system(size: 20, weight: .bold, design: .default))
+                            } else {
+                                Text("Recent Ratings")
+                                    .font(.system(size: 20, weight: .bold, design: .default))
+                                    .padding()
+                                GeometryReader { reader in
+                                    PlayerChartLine(viewModel: viewModel, frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width - 60, height: reader.frame(in: .local).height - 20)))
+                                }
+                                .frame(width: geometry.frame(in: .local).size.width, height: 250)
+                                .padding(.horizontal)
                             }
-                            .frame(width: geometry.frame(in: .local).size.width, height: 250)
-                            .padding(.horizontal)
                         }
                     }
-                }
-                .navigationBarTitle(viewModel.player.name)
-                .padding(.horizontal)
-        }
+                    .navigationBarTitle(viewModel.player.name)
+            }
         }
     }
     

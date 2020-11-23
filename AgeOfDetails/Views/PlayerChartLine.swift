@@ -28,7 +28,7 @@ struct PlayerChartLine: View {
                 .stroke(Color.black ,style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
                 .drawingGroup()
             yAxisLabels
-            path
+            ratingPath
                 .trim(from: 0, to: progress)
                 .stroke(Color.green ,style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
                 .drawingGroup()
@@ -56,17 +56,12 @@ struct PlayerChartLine: View {
                 }
             }
         }
-//        .overlay(
-//            RoundedRectangle(cornerRadius: 8)
-//                .stroke(Color.black, lineWidth: 1)
-//                .offset(x: -35, y: -20)
-//                .frame(width: frame.width + 30, height: frame.height, alignment: .leading))
         .rotationEffect(.degrees(180), anchor: .center)
         .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
         .offset(x: 0, y: -15)
     }
     
-    var path: Path {
+    var ratingPath: Path {
         return Path.lineChart(points: viewModel.mappedRatings, step: CGPoint(x: stepWidth, y: stepHeight))
     }
     
@@ -94,13 +89,14 @@ struct PlayerChartLine: View {
                 .position(CGPoint(x: CGFloat(0), y: stepHeight * CGFloat((viewModel.mappedRatings.max() ?? 0) - (viewModel.mappedRatings.min() ?? 0))))
                 .rotationEffect(.degrees(180), anchor: .center)
                 .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                .font(.system(size: 8))
+                .offset(x: 0, y: -55)
             Text("\(Int(viewModel.mappedRatings.max() ?? 0))")
                 .position(CGPoint(x: 0, y: 0))
                 .rotationEffect(.degrees(180), anchor: .center)
                 .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                .font(.system(size: 8))
-        }.offset(x: -10, y: -45)
+                .offset(x: 0, y: -45)
+        }
+        .font(.system(size: 8))
     }
     
     var stepWidth: CGFloat {
