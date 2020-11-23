@@ -21,14 +21,21 @@ struct PlayerChartLine: View {
     @ViewBuilder
     var body: some View {
         ZStack {
+            xAxis
+                .stroke(Color.black ,style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
+                .drawingGroup()
+            yAxis
+                .stroke(Color.black ,style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
+                .drawingGroup()
+            yAxisLabels
             path
                 .trim(from: 0, to: progress)
                 .stroke(Color.green ,style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
                 .drawingGroup()
-                .animation(.easeIn(duration: 3))
+                .animation(.easeIn(duration: 4.5))
                 .onAppear {
                     self.progress = 1.0
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 4.5, execute: {
                         self.showChartInformation = true
                     })
                 }
@@ -49,17 +56,51 @@ struct PlayerChartLine: View {
                 }
             }
         }
-        .overlay(
-            RoundedRectangle(cornerRadius: 8)
-                .stroke(Color.black, lineWidth: 1)
-                .offset(x: -35, y: -20)
-                .frame(width: frame.width + 30, height: frame.height, alignment: .leading))
+//        .overlay(
+//            RoundedRectangle(cornerRadius: 8)
+//                .stroke(Color.black, lineWidth: 1)
+//                .offset(x: -35, y: -20)
+//                .frame(width: frame.width + 30, height: frame.height, alignment: .leading))
         .rotationEffect(.degrees(180), anchor: .center)
         .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+        .offset(x: 0, y: -15)
     }
     
     var path: Path {
         return Path.lineChart(points: viewModel.mappedRatings, step: CGPoint(x: stepWidth, y: stepHeight))
+    }
+    
+    var xAxis: Path {
+        var path = Path()
+        let p1 = CGPoint(x: 0, y: 0)
+        path.move(to: p1)
+        let p2 = CGPoint(x: stepWidth * CGFloat(viewModel.ratingHistory.count - 1), y: 0)
+        path.addLine(to: p2)
+        return path
+    }
+    
+    var yAxis: Path {
+        var path = Path()
+        let p1 = CGPoint(x: 0, y: 0)
+        path.move(to: p1)
+        let p2 = CGPoint(x: 0, y: stepHeight * CGFloat((viewModel.mappedRatings.max() ?? 0) - (viewModel.mappedRatings.min() ?? 0)))
+        path.addLine(to: p2)
+        return path
+    }
+    
+    var yAxisLabels: some View {
+        ZStack {
+            Text("\(Int(viewModel.mappedRatings.min() ?? 0))")
+                .position(CGPoint(x: CGFloat(0), y: stepHeight * CGFloat((viewModel.mappedRatings.max() ?? 0) - (viewModel.mappedRatings.min() ?? 0))))
+                .rotationEffect(.degrees(180), anchor: .center)
+                .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                .font(.system(size: 8))
+            Text("\(Int(viewModel.mappedRatings.max() ?? 0))")
+                .position(CGPoint(x: 0, y: 0))
+                .rotationEffect(.degrees(180), anchor: .center)
+                .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                .font(.system(size: 8))
+        }.offset(x: -10, y: -45)
     }
     
     var stepWidth: CGFloat {
