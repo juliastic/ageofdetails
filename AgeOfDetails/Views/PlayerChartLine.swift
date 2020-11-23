@@ -25,17 +25,17 @@ struct PlayerChartLine: View {
                 .trim(from: 0, to: progress)
                 .stroke(Color.green ,style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
                 .drawingGroup()
-                .animation(.easeIn(duration: 2))
+                .animation(.easeIn(duration: 3))
                 .onAppear {
                     self.progress = 1.0
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3, execute: {
                         self.showChartInformation = true
                     })
                 }
             if showChartInformation {
-                ForEach(0..<self.viewModel.filteredRatings.count, id: \.self) { i in
+                ForEach(0..<self.viewModel.ratingHistory.count, id: \.self) { i in
                     ZStack {
-                        Text("\(Int(self.viewModel.filteredRatings[i]))")
+                        Text("\(Int(self.viewModel.mappedRatings[i]))")
                             .font(.system(size: 8))
                             .rotationEffect(.degrees(180), anchor: .center)
                             .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
@@ -52,18 +52,18 @@ struct PlayerChartLine: View {
         .overlay(
             RoundedRectangle(cornerRadius: 8)
                 .stroke(Color.black, lineWidth: 1)
-                .offset(x: -36, y: -20)
+                .offset(x: -35, y: -20)
                 .frame(width: frame.width + 30, height: frame.height, alignment: .leading))
         .rotationEffect(.degrees(180), anchor: .center)
         .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
     }
     
     var path: Path {
-        return Path.lineChart(points: viewModel.filteredRatings, step: CGPoint(x: stepWidth, y: stepHeight))
+        return Path.lineChart(points: viewModel.mappedRatings, step: CGPoint(x: stepWidth, y: stepHeight))
     }
     
     var stepWidth: CGFloat {
-        return frame.size.width / CGFloat(viewModel.filteredPlayerMatchHistory.count - 1)
+        return frame.size.width / CGFloat(viewModel.mappedRatings.count - 1)
     }
     
     /*
@@ -72,7 +72,7 @@ struct PlayerChartLine: View {
     var stepHeight: CGFloat {
         var min: Double?
         var max: Double?
-        let points = viewModel.filteredRatings
+        let points = viewModel.mappedRatings
         
         if let minPoint = points.min(), let maxPoint = points.max(), minPoint != maxPoint {
             min = minPoint
@@ -88,7 +88,7 @@ struct PlayerChartLine: View {
     }
     
     func calculateCirclePosition(for index: Int) -> CGPoint {
-        let offset = viewModel.filteredRatings.min() ?? 0
-        return CGPoint(x: stepWidth * CGFloat(index), y: stepHeight * CGFloat(viewModel.filteredRatings[index] - offset))
+        let offset = viewModel.mappedRatings.min() ?? 0
+        return CGPoint(x: stepWidth * CGFloat(index), y: stepHeight * CGFloat(viewModel.mappedRatings[index] - offset))
     }
 }

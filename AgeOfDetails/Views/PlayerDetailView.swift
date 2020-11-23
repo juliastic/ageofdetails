@@ -36,8 +36,8 @@ struct PlayerDetailView: View {
                 } else if let error = viewModel.error {
                     Label(error.description, systemImage: "exclamationmark.triangle")
                 } else {
-                    if viewModel.playerMatchHistory.isEmpty {
-                        Text("No recent matches have been found").font(.system(size: 20, weight: .bold, design: .default))
+                    if viewModel.ratingHistory.isEmpty {
+                        Text("No recent ratings have been found").font(.system(size: 20, weight: .bold, design: .default))
                     } else {
                         Text("Recent Ratings").font(.system(size: 20, weight: .bold, design: .default))
                         GeometryReader { reader in

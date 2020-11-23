@@ -24,8 +24,13 @@ class AoENet {
     }
     
     func loadMatchHistory(for id: String, useSteamId: Bool, start: Int, count: Int) -> AnyPublisher<[PlayerMatchHistory], AoENetError> {
-        buildMatchHistoryURL(start: start, count: count, id: id, useSteamId: useSteamId)
+        buildHistoryURL(for: "matches", leaderboardId: -1, start: start, count: count, id: id, useSteamId: useSteamId)
         return loadAoEMultipleData(for: PlayerMatchHistory.self)
+    }
+    
+    func loadRatingHistory(for id: String, leaderboardId: Int, useSteamId: Bool, start: Int, count: Int) -> AnyPublisher<[Rating], AoENetError> {
+        buildHistoryURL(for: "ratinghistory", leaderboardId: leaderboardId, start: start, count: count, id: id, useSteamId: useSteamId)
+        return loadAoEMultipleData(for: Rating.self)
     }
     
     // REFACTOR THESE METHODS
@@ -67,8 +72,15 @@ class AoENet {
             URLQueryItem(name: "count", value: "\(count)")]
     }
     
-    private func buildMatchHistoryURL(start: Int, count: Int, id: String, useSteamId: Bool) {
-        urlComponents.path = "/api/player/matches"
+    private func buildHistoryURL(for url: String, leaderboardId: Int, start: Int, count: Int, id: String, useSteamId: Bool) {
+        urlComponents.path = "/api/player/" + url
+        buildQueryHistoryItems(start: start, count: count, id: id, useSteamId: useSteamId)
+        if leaderboardId != -1 {
+            urlComponents.queryItems?.append(URLQueryItem(name: "game", value: "\(leaderboardId)"))
+        }
+    }
+    
+    private func buildQueryHistoryItems(start: Int, count: Int, id: String, useSteamId: Bool) {
         urlComponents.queryItems = [
             URLQueryItem(name: "game", value: "aoe2de"),
             URLQueryItem(name: "start", value: "\(start)"),
