@@ -18,6 +18,14 @@ class AoENet {
         urlComponents.host = "aoe2.net"
     }
     
+    func loadAppStats() -> AnyPublisher<AppStats, AoENetError> {
+        urlComponents.path = "/api/stats/players"
+        urlComponents.queryItems = [
+            URLQueryItem(name: "game", value: "aoe2de")
+        ]
+        return loadAoESingleData(for: AppStats.self)
+    }
+    
     func loadLeadboard(start: Int, count: Int, id: Int) -> AnyPublisher<LeaderboardData, AoENetError> {
         buildLeaderboardURL(start: start, count: count, id: id)
         return loadAoESingleData(for: LeaderboardData.self)

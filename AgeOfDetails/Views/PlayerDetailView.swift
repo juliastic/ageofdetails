@@ -56,7 +56,7 @@ struct PlayerDetailView: View {
                                     .font(.system(size: 15, weight: .light, design: .default))
                                     .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
                                 GeometryReader { reader in
-                                    PlayerChartLine(viewModel: viewModel, frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width - 60, height: reader.frame(in: .local).height - 20)))
+                                    DataChartLine(data: viewModel.mappedRatings, frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width - 60, height: reader.frame(in: .local).height - 20)))
                                 }
                                 .frame(width: geometry.frame(in: .local).size.width, height: 250)
                                 .padding(.horizontal)

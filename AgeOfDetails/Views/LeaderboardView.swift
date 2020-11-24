@@ -35,21 +35,7 @@ struct LeaderboardView: View {
         }
         .navigationTitle(LeaderboardCategory(rawValue: viewModel.id)?.name ?? "")
         .navigationBarItems(trailing: HStack {
-            Button(action: {
-                viewModel.loading = true
-                lastUpdated = Date()
-            }) {
-                if dataInitiallyLoaded {
-                    VStack {
-                        Image(systemName: "arrow.2.circlepath")
-                            .rotationEffect(.degrees(viewModel.loading ? 360.0 : 0.0))
-                            .animation(viewModel.loading ? Animation.linear(duration: 2) : nil)
-                        Spacer()
-                        Text(lastUpdated.shortFormat())
-                            .font(.system(size: 8, weight: .light, design: .default))
-                    }
-                }
-            }
+            RefreshButtonView(dataInitiallyLoaded: $dataInitiallyLoaded, viewModelLoading: $viewModel.loading)
         })
     }
     

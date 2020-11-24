@@ -21,7 +21,7 @@ struct Player: Codable, Hashable, Identifiable {
     let games: Int
     let wins: Int
     let losses: Int
-    let lastMatchTime: Int?
+    let lastMatchTime: Double?
     
     private enum CodingKeys: String, CodingKey {
         case id = "profile_id"
