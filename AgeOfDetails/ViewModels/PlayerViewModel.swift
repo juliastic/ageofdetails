@@ -19,7 +19,9 @@ public class PlayerViewModel: ObservableObject, Identifiable {
     let leaderboardId: Int
         
     var mappedRatings: [Double] {
-        return ratingHistory.map { rating in Double(rating.rating) }
+        var mapped = ratingHistory.map { rating in Double(rating.rating) }
+        mapped.reverse()
+        return mapped
     }
 
     init(player: Player, leaderboardId: Int) {
@@ -27,8 +29,8 @@ public class PlayerViewModel: ObservableObject, Identifiable {
         self.leaderboardId = leaderboardId
     }
     
-    func loadData() {
-        AoENet.instance.loadRatingHistory(for: player.steamId ?? "\(player.id)", leaderboardId: leaderboardId, useSteamId: player.steamId != nil, start: 0, count: 10)
+    func loadRatingHistory() {
+        AoENet.instance.loadRatingHistory(for: player.steamId ?? "\(player.id)", leaderboardId: 0, useSteamId: player.steamId != nil, start: 0, count: 10)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] value in
                 guard let self = self else { return }

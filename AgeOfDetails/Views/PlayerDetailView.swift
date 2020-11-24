@@ -22,17 +22,23 @@ struct PlayerDetailView: View {
         GeometryReader { geometry in
             ScrollView(.vertical) {
                     VStack(alignment: .leading) {
-                        Text(viewModel.player.name + " " + (viewModel.player.country ?? "").flag())
-                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
-                        Text("\(winrate * 100)%")
-                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
-                        winrateView
-                            .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
+                        Text("Player Information")
+                            .font(.system(size: 20, weight: .bold, design: .default))
+                            .padding()
+                        VStack(alignment: .leading) {
+                            Text("Name: " + viewModel.player.name)
+                            Text("Country: " + (viewModel.player.country ?? "").flag())
+                            Text("Winrate: \(Int(winrate * 100))%")
+                            winrateView
+                            Text("Played Games: \(viewModel.player.games)")
+                        }
+                        .padding(EdgeInsets(top: 2, leading: 10, bottom: 0, trailing: 0))
+                        .font(.system(size: 15, weight: .light, design: .default))
                         if viewModel.loading {
                             ProgressView()
                                 .onAppear(perform: {
                                     if viewModel.loading {
-                                        viewModel.loadData()
+                                        viewModel.loadRatingHistory()
                                     }
                                 })
                                 .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
@@ -43,9 +49,12 @@ struct PlayerDetailView: View {
                                 Text("No recent ratings have been found")
                                     .font(.system(size: 20, weight: .bold, design: .default))
                             } else {
-                                Text("Recent Ratings")
+                                Text("Rating History")
                                     .font(.system(size: 20, weight: .bold, design: .default))
                                     .padding()
+                                Text("Last played game: " + Date(timeIntervalSince1970: viewModel.ratingHistory[0].timestamp).shortFormat())
+                                    .font(.system(size: 15, weight: .light, design: .default))
+                                    .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
                                 GeometryReader { reader in
                                     PlayerChartLine(viewModel: viewModel, frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width - 60, height: reader.frame(in: .local).height - 20)))
                                 }

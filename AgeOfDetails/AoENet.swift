@@ -76,7 +76,7 @@ class AoENet {
         urlComponents.path = "/api/player/" + url
         buildQueryHistoryItems(start: start, count: count, id: id, useSteamId: useSteamId)
         if leaderboardId != -1 {
-            urlComponents.queryItems?.append(URLQueryItem(name: "game", value: "\(leaderboardId)"))
+            urlComponents.queryItems?.append(URLQueryItem(name: "leaderboard_id", value: "\(leaderboardId)"))
         }
     }
     

@@ -10,6 +10,9 @@ import SwiftUI
 struct LeaderboardView: View {
     @ObservedObject var viewModel: LeaderboardViewModel
     
+    @State private var lastUpdated = Date()
+    @State private var dataInitiallyLoaded = false
+        
     @ViewBuilder
     var body: some View {
         GeometryReader { geometry in
@@ -25,8 +28,29 @@ struct LeaderboardView: View {
             } else {
                 playerScrollView
                     .padding(10)
+                    .onAppear {
+                        dataInitiallyLoaded = true
+                    }
             }
-        }.navigationTitle(LeaderboardCategory(rawValue: viewModel.id)?.name ?? "")
+        }
+        .navigationTitle(LeaderboardCategory(rawValue: viewModel.id)?.name ?? "")
+        .navigationBarItems(trailing: HStack {
+            Button(action: {
+                viewModel.loading = true
+                lastUpdated = Date()
+            }) {
+                if dataInitiallyLoaded {
+                    VStack {
+                        Image(systemName: "arrow.2.circlepath")
+                            .rotationEffect(.degrees(viewModel.loading ? 360.0 : 0.0))
+                            .animation(viewModel.loading ? Animation.linear(duration: 2) : nil)
+                        Spacer()
+                        Text(lastUpdated.shortFormat())
+                            .font(.system(size: 8, weight: .light, design: .default))
+                    }
+                }
+            }
+        })
     }
     
     var playerScrollView: some View {

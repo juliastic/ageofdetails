@@ -30,6 +30,7 @@
 		C12AD4F8256A444E00D21B26 /* PlayerChartLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12AD4F7256A444E00D21B26 /* PlayerChartLine.swift */; };
 		C12AD4FD256A590D00D21B26 /* PathExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C12AD4FC256A590D00D21B26 /* PathExtensions.swift */; };
 		C141BE82256B94AC002DC7EE /* CellViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = C141BE81256B94AC002DC7EE /* CellViewModifier.swift */; };
+		C15DD902256CE5B500775766 /* DateExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DD901256CE5B500775766 /* DateExtensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		C12AD4F7256A444E00D21B26 /* PlayerChartLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerChartLine.swift; sourceTree = "<group>"; };
 		C12AD4FC256A590D00D21B26 /* PathExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathExtensions.swift; sourceTree = "<group>"; };
 		C141BE81256B94AC002DC7EE /* CellViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellViewModifier.swift; sourceTree = "<group>"; };
+		C15DD901256CE5B500775766 /* DateExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +211,7 @@
 			children = (
 				C12AD4DA25641BE200D21B26 /* StringExtensions.swift */,
 				C12AD4FC256A590D00D21B26 /* PathExtensions.swift */,
+				C15DD901256CE5B500775766 /* DateExtensions.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -356,6 +359,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C110FED325610DBC002C56EE /* PlayerViewModel.swift in Sources */,
+				C15DD902256CE5B500775766 /* DateExtensions.swift in Sources */,
 				C12AD4C92564041C00D21B26 /* PlayerDetailView.swift in Sources */,
 				C110FEE925610FF3002C56EE /* AoENetError.swift in Sources */,
 				C12AD4BC25629DD400D21B26 /* LeaderboardMainView.swift in Sources */,
