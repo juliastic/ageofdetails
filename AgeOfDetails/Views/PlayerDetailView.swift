@@ -35,12 +35,7 @@ struct PlayerDetailView: View {
                         .padding(EdgeInsets(top: 2, leading: 10, bottom: 0, trailing: 0))
                         .font(.system(size: 15, weight: .light, design: .default))
                         if viewModel.loading {
-                            ProgressView()
-                                .onAppear(perform: {
-                                    if viewModel.loading {
-                                        viewModel.loadRatingHistory()
-                                    }
-                                })
+                            LoadingView(loadAction: viewModel.loadRatingHistory)
                                 .frame(width: geometry.size.width, height: geometry.size.height, alignment: .center)
                         } else if let error = viewModel.error {
                             Label(error.description, systemImage: "exclamationmark.triangle")

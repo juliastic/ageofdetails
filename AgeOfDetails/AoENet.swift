@@ -10,10 +10,9 @@ import Combine
 
 class AoENet {
     static let instance = AoENet()
-    var urlComponents: URLComponents
-    
+    private var urlComponents = URLComponents()
+        
     private init() {
-        urlComponents = URLComponents()
         urlComponents.scheme = "https"
         urlComponents.host = "aoe2.net"
     }

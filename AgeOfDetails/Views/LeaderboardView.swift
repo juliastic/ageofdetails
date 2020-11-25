@@ -10,19 +10,14 @@ import SwiftUI
 struct LeaderboardView: View {
     @ObservedObject var viewModel: LeaderboardViewModel
     
-    @State private var lastUpdated = Date()
     @State private var dataInitiallyLoaded = false
         
     @ViewBuilder
     var body: some View {
         GeometryReader { geometry in
             if viewModel.loading {
-                ProgressView()
-                    .onAppear(perform: {
-                        if viewModel.loading {
-                            viewModel.loadData()
-                        }
-                    }).frame(width: geometry.size.width, height: geometry.size.height, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
+                LoadingView(loadAction: viewModel.loadData)
+                    .frame(width: geometry.size.width, height: geometry.size.height, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
             } else if let error = viewModel.error {
                 Label(error.description, systemImage: "exclamationmark.triangle")
             } else {

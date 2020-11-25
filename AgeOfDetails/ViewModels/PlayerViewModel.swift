@@ -30,7 +30,7 @@ public class PlayerViewModel: ObservableObject, Identifiable {
     }
     
     func loadRatingHistory() {
-        AoENet.instance.loadRatingHistory(for: player.steamId ?? "\(player.id)", leaderboardId: 0, useSteamId: player.steamId != nil, start: 0, count: 10)
+        AoENet.instance.loadRatingHistory(for: player.steamId ?? "\(player.id)", leaderboardId: leaderboardId, useSteamId: player.steamId != nil, start: 0, count: 10)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] value in
                 guard let self = self else { return }

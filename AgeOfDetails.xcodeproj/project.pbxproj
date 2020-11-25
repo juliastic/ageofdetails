@@ -36,6 +36,8 @@
 		C15DD914256D0E9000775766 /* AppStatsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DD913256D0E9000775766 /* AppStatsViewModel.swift */; };
 		C15DD91C256D11BF00775766 /* PlayerStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DD91B256D11BE00775766 /* PlayerStats.swift */; };
 		C15DD921256D194500775766 /* RefreshButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DD920256D194500775766 /* RefreshButtonView.swift */; };
+		C15DD929256E2FA800775766 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DD928256E2FA800775766 /* LoadingView.swift */; };
+		C15DD92E256E57F600775766 /* GenericViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DD92D256E57F600775766 /* GenericViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +93,8 @@
 		C15DD913256D0E9000775766 /* AppStatsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStatsViewModel.swift; sourceTree = "<group>"; };
 		C15DD91B256D11BE00775766 /* PlayerStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerStats.swift; sourceTree = "<group>"; };
 		C15DD920256D194500775766 /* RefreshButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RefreshButtonView.swift; sourceTree = "<group>"; };
+		C15DD928256E2FA800775766 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		C15DD92D256E57F600775766 /* GenericViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +191,7 @@
 				C110FECC25610DA1002C56EE /* LeaderboardViewModel.swift */,
 				C110FED225610DBC002C56EE /* PlayerViewModel.swift */,
 				C15DD913256D0E9000775766 /* AppStatsViewModel.swift */,
+				C15DD92D256E57F600775766 /* GenericViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -217,6 +222,7 @@
 				C12AD4C82564041C00D21B26 /* PlayerDetailView.swift */,
 				C12AD4F7256A444E00D21B26 /* DataChartLine.swift */,
 				C15DD920256D194500775766 /* RefreshButtonView.swift */,
+				C15DD928256E2FA800775766 /* LoadingView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -384,6 +390,7 @@
 				C110FEEF25612CBA002C56EE /* LeaderboardView.swift in Sources */,
 				C110FECD25610DA1002C56EE /* LeaderboardViewModel.swift in Sources */,
 				C110FE9A25610D0A002C56EE /* AgeOfDetailsApp.swift in Sources */,
+				C15DD929256E2FA800775766 /* LoadingView.swift in Sources */,
 				C141BE82256B94AC002DC7EE /* CellViewModifier.swift in Sources */,
 				C15DD921256D194500775766 /* RefreshButtonView.swift in Sources */,
 				C15DD914256D0E9000775766 /* AppStatsViewModel.swift in Sources */,
@@ -396,6 +403,7 @@
 				C12AD4FD256A590D00D21B26 /* PathExtensions.swift in Sources */,
 				C12AD4F8256A444E00D21B26 /* DataChartLine.swift in Sources */,
 				C110FEDC25610E49002C56EE /* LeaderboardData.swift in Sources */,
+				C15DD92E256E57F600775766 /* GenericViewModel.swift in Sources */,
 				C12AD4E3256811C400D21B26 /* PlayerMatchHistory.swift in Sources */,
 				C12AD4E8256838BC00D21B26 /* MatchPlayer.swift in Sources */,
 			);

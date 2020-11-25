@@ -39,7 +39,7 @@ struct DataChartLine: View {
                 .animation(.easeIn(duration: 5))
                 .onAppear {
                     self.progress = 1.0
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 4.5, execute: {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5.5, execute: {
                         self.showChartInformation = true
                     })
                 }
@@ -51,12 +51,17 @@ struct DataChartLine: View {
                             .rotationEffect(.degrees(180), anchor: .center)
                             .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                             .offset(x: 0, y: i % 2 == 0 ? 10 : -10)
-                    Circle()
-                        .fill(Color.black)
-                        .frame(width: 5, height: 5)
+                        Circle()
+                            .fill(Color.black)
+                            .frame(width: 5, height: 5)
                     }
                     .position(calculateCirclePosition(for: i))
                     .animation(Animation.easeIn(duration: 2).delay(2))
+                    if i % 2 == 0 {
+                        drawLine(for: i)
+                            .stroke(style: StrokeStyle(lineWidth: 1, dash: [2]))
+                            .drawingGroup()
+                    }
                 }
             }
         }
@@ -67,6 +72,19 @@ struct DataChartLine: View {
     
     var ratingPath: Path {
         return Path.lineChart(points: data, step: CGPoint(x: stepWidth, y: stepHeight))
+    }
+    
+    var xAxisLines: [Path] {
+        var paths: [Path] = []
+        for i in 0..<data.count {
+            var path = Path()
+            let p1 = CGPoint(x: 0, y: stepHeight * CGFloat(data[i]))
+            path.move(to: p1)
+            let p2 = CGPoint(x: stepWidth * CGFloat(data.count - 1), y: stepHeight * CGFloat(data[i]))
+            path.addLine(to: p2)
+            paths.append(path)
+        }
+        return paths
     }
     
     var xAxis: Path {
@@ -130,5 +148,15 @@ struct DataChartLine: View {
     func calculateCirclePosition(for index: Int) -> CGPoint {
         let offset = data.min() ?? 0
         return CGPoint(x: stepWidth * CGFloat(index), y: stepHeight * CGFloat(data[index] - offset))
+    }
+    
+    func drawLine(for index: Int) -> Path {
+        let offset = data.min() ?? 0
+        var path = Path()
+        let p1 = CGPoint(x: 0, y: stepHeight * CGFloat(data[index] - offset))
+        path.move(to: p1)
+        let p2 = CGPoint(x: stepWidth * CGFloat(data.count - 1), y: stepHeight * CGFloat(data[index] - offset))
+        path.addLine(to: p2)
+        return path
     }
 }
