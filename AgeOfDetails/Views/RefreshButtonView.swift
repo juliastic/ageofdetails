@@ -7,22 +7,30 @@
 
 import SwiftUI
 
-struct RefreshButtonView: View {
+struct RefreshButtonView<Source: LoadableObject>: View {
+    @ObservedObject var source: Source
+
     @State var lastUpdated = Date()
-    
+    @State var loading: Bool = false
+
     @Binding var dataInitiallyLoaded: Bool
-    @Binding var viewModelLoading: Bool
-    
+        
+    @ViewBuilder
     var body: some View {
         Button(action: {
-            viewModelLoading = true
             lastUpdated = Date()
+            source.resetState()
         }) {
             if dataInitiallyLoaded {
                 VStack {
-                    Image(systemName: "arrow.2.circlepath")
-                        .rotationEffect(.degrees(viewModelLoading ? 360.0 : 0.0))
-                        .animation(viewModelLoading ? Animation.linear(duration: 1) : nil)
+                    switch source.state {
+                    case .loading, .idle:
+                        Image(systemName: "arrow.2.circlepath")
+                            .rotationEffect(.degrees(360.0))
+                            .animation(Animation.linear(duration: 10).repeatForever(autoreverses: false))
+                    default:
+                        Image(systemName: "arrow.2.circlepath")
+                    }
                     Spacer()
                     Text(lastUpdated.shortFormat())
                         .font(.system(size: 8, weight: .light, design: .default))

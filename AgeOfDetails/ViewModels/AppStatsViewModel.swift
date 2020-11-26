@@ -8,44 +8,28 @@
 import Foundation
 import Combine
 
-public class AppStatsViewModel: ObservableObject {
-    var subscriptions: Set<AnyCancellable> = []
+class AppStatsViewModel: LoadableObject {
+    @Published var state: LoadingState<AppStats> = .idle
+    private var publisher: AnyPublisher<AppStats, AoENetError>?
+    private var cancellable: AnyCancellable?
     
-    @Published var loading: Bool = true
-    @Published var error: AoENetError?
-    @Published var appStats: AppStats?
-    
-    private var reversedGameStats: [GameStats] {
-        if let appStats = appStats {
-            var gameStats = appStats.gameStats
-            gameStats = gameStats.reversed()
-            return gameStats
-        }
-        return []
-    }
-    
-    func loadData() {
-        AoENet.instance.loadAppStats()
-            .receive(on: DispatchQueue.main)
-            .sink(receiveCompletion: { [weak self] value in
-                guard let self = self else { return }
-                if case let .failure(error) = value {
-                    self.error = error
-                }
-                self.loading = false
-              }, receiveValue: { [weak self] appStats in
-                guard let self = self else { return }
-                self.appStats = appStats
-            })
-            .store(in: &subscriptions)
-    }
-    
-    func lastInGameValue() -> (Int, Date) {
-        for gameStat in reversedGameStats {
-            if let inGame = gameStat.playerStats.inGame {
-                return (inGame, Date(timeIntervalSince1970: gameStat.time))
+    func load() {
+        state = .loading
+        publisher = AoENet.instance.loadAppStats()
+        cancellable = publisher!
+        .receive(on: DispatchQueue.main)
+        .sink(receiveCompletion: { [weak self] value in
+            guard let self = self else { return }
+            if case let .failure(error) = value {
+                self.state = .failed(error)
             }
-        }
-        return (0, Date())
+          }, receiveValue: { [weak self] appStats in
+            guard let self = self else { return }
+            self.state = .loaded(appStats)
+        })
+    }
+    
+    func resetState() {
+        state = .idle
     }
 }

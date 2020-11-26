@@ -11,50 +11,42 @@ struct LeaderboardView: View {
     @ObservedObject var viewModel: LeaderboardViewModel
     
     @State private var dataInitiallyLoaded = false
+    @State private var dataDisplayed = false
         
     @ViewBuilder
     var body: some View {
         GeometryReader { geometry in
-            if viewModel.loading {
-                LoadingView(loadAction: viewModel.loadData)
-                    .frame(width: geometry.size.width, height: geometry.size.height, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-            } else if let error = viewModel.error {
-                Label(error.description, systemImage: "exclamationmark.triangle")
-            } else {
-                playerScrollView
+            AsyncContentView(source: viewModel, frame: .constant(CGRect(x: 0, y: 0, width: geometry.size.width, height: geometry.size.height))) { leaderboard in
+                GeometryReader { geometry in
+                    ScrollView {
+                        ForEach(leaderboard.players) { player in
+                            NavigationLink(destination: PlayerDetailView(viewModel: PlayerViewModel(player: player, leaderboardId: leaderboard.id))) {
+                                VStack {
+                                    VStack {
+                                        PlayerView(viewModel: PlayerViewModel(player: player, leaderboardId: leaderboard.id))
+                                    }
+                                    .frame(width: geometry.size.width - 20, height: 70, alignment: .leading)
+                                    .background(Color.green)
+                                    .cornerRadius(10)
+                                    Divider()
+                                        .background(Color.black)
+                                        .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
+                                }
+                            }
+                        }
+                    }
+                    .cornerRadius(10)
                     .padding(10)
                     .onAppear {
                         dataInitiallyLoaded = true
-                    }
-            }
-        }
-        .navigationTitle(LeaderboardCategory(rawValue: viewModel.id)?.name ?? "")
-        .navigationBarItems(trailing: HStack {
-            RefreshButtonView(dataInitiallyLoaded: $dataInitiallyLoaded, viewModelLoading: $viewModel.loading)
-        })
-    }
-    
-    var playerScrollView: some View {
-        GeometryReader { geometry in
-            ScrollView {
-                ForEach(viewModel.players) { playerViewModel in
-                    NavigationLink(destination: PlayerDetailView(viewModel: playerViewModel)) {
-                        VStack {
-                            VStack {
-                                PlayerView(viewModel: playerViewModel)
-                                    .frame(width: geometry.size.width, alignment: .leading)
-                            }
-                            .frame(width: geometry.size.width, height: 70, alignment: .leading)
-                            .background(Color.green)
-                            .cornerRadius(10)
-                            Divider()
-                                .background(Color.black)
-                                .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
-                        }
+                        dataDisplayed = true
                     }
                 }
             }
-            .cornerRadius(10)
+            .navigationTitle(LeaderboardCategory(rawValue: viewModel.id)?.name ?? "")
+            .navigationBarItems(trailing: HStack {
+                RefreshButtonView(source: viewModel, dataInitiallyLoaded: $dataInitiallyLoaded)
+            })
         }
     }
 }

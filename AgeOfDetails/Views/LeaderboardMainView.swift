@@ -29,16 +29,10 @@ struct LeaderboardMainView: View {
                             .font(.system(size: 20, weight: .bold, design: .default))
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 10, trailing: 0))
                         Spacer()
-                        RefreshButtonView(dataInitiallyLoaded: $dataInitiallyLoaded, viewModelLoading: $viewModel.loading)
-                            .padding(EdgeInsets(top: 10, leading: 0, bottom: 0, trailing: 0))
+                        RefreshButtonView(source: viewModel, dataInitiallyLoaded: $dataInitiallyLoaded)
                     }
-                    if viewModel.loading {
-                        LoadingView(loadAction: viewModel.loadData)
-                            .padding(EdgeInsets(top: dataInitiallyLoaded ? -10 : 0, leading: 0, bottom: 0, trailing: 0))
-                    } else if let error = viewModel.error {
-                        Label(error.description, systemImage: "exclamationmark.triangle")
-                    } else {
-                        Text("Online: \(viewModel.lastInGameValue().0)")
+                    AsyncContentView(source: viewModel) { appStats in
+                        Text("Online: \(appStats.lastInGameValue().0)")
                             .font(.system(size: 12, weight: .light, design: .default))
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                             .onAppear {
@@ -68,7 +62,6 @@ struct LeaderboardMainView: View {
                             }
                         }
                     }
-                    .disabled(viewModel.loading)
                 }
             }
             .cornerRadius(10)

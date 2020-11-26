@@ -8,14 +8,12 @@
 import Foundation
 import Combine
 
-public class LeaderboardViewModel: ObservableObject {
-    var subscriptions: Set<AnyCancellable> = []
-    
-    @Published var leaderboard: LeaderboardData?
-    @Published var loading: Bool = true
-    @Published var error: AoENetError?
-    @Published var players: [PlayerViewModel] = []
-    
+class LeaderboardViewModel: LoadableObject {
+    @Published var state: LoadingState<LeaderboardData> = .idle
+
+    var publisher: AnyPublisher<LeaderboardData, AoENetError>?
+    private var cancellable: AnyCancellable?
+        
     private var playerCount = 0
     let id: Int
     
@@ -23,25 +21,26 @@ public class LeaderboardViewModel: ObservableObject {
         self.id = id
     }
     
-    func loadData() {
-        AoENet.instance.loadLeadboard(start: playerCount, count: Constants.fetch, id: id)
+    func load() {
+        state = .loading
+        publisher = AoENet.instance.loadLeadboard(start: playerCount, count: Constants.fetch, id: id)
+        cancellable = publisher!
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] value in
                 guard let self = self else { return }
                 if case let .failure(error) = value {
-                    self.error = error
+                    self.state = .failed(error)
                 }
-                self.loading = false
               }, receiveValue: { [weak self] leaderboard in
                 guard let self = self else { return }
-                self.leaderboard = leaderboard
-                leaderboard.players.forEach() { player in
-                    self.players.append(PlayerViewModel(player: player, leaderboardId: self.id))
-                self.playerCount += leaderboard.players.count
-                }
+                self.state = .loaded(leaderboard)
             })
-            .store(in: &subscriptions)
     }
+    
+    func resetState() {
+        state = .idle
+    }
+    
 }
 
 enum Constants {
