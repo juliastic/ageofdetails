@@ -11,7 +11,6 @@ struct LeaderboardView: View {
     @ObservedObject var viewModel: LeaderboardViewModel
     
     @State private var dataInitiallyLoaded = false
-    @State private var dataDisplayed = false
         
     @ViewBuilder
     var body: some View {
@@ -39,7 +38,6 @@ struct LeaderboardView: View {
                     .padding(10)
                     .onAppear {
                         dataInitiallyLoaded = true
-                        dataDisplayed = true
                     }
                 }
             }

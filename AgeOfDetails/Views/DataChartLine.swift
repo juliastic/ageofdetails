@@ -5,7 +5,6 @@
 //  Created by Julia Grill on 22.11.20.
 //
 
-import Foundation
 import SwiftUI
 
 struct DataChartLine: View {
@@ -46,11 +45,13 @@ struct DataChartLine: View {
             if showChartInformation {
                 ForEach(0..<data.count, id: \.self) { i in
                     ZStack {
-                        Text("\(Int(data[i]))")
-                            .font(.system(size: 8))
-                            .rotationEffect(.degrees(180), anchor: .center)
-                            .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                            .offset(x: 0, y: i % 2 == 0 ? 10 : -10)
+                        if !(i == 0 && (data[i] == data.min() ?? 0 || data[i] == data.max() ?? 0)) {
+                            Text("\(Int(data[i]))")
+                                .font(.system(size: 8))
+                                .rotationEffect(.degrees(180), anchor: .center)
+                                .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
+                                .offset(x: 0, y: i % 2 == 0 ? 10 : -10)
+                        }
                         Circle()
                             .fill(Color.black)
                             .frame(width: 5, height: 5)

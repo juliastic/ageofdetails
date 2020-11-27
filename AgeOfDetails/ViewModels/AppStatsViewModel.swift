@@ -10,6 +10,7 @@ import Combine
 
 class AppStatsViewModel: LoadableObject {
     @Published var state: LoadingState<AppStats> = .idle
+    
     private var publisher: AnyPublisher<AppStats, AoENetError>?
     private var cancellable: AnyCancellable?
     

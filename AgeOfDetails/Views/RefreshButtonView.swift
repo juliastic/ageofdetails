@@ -11,9 +11,17 @@ struct RefreshButtonView<Source: LoadableObject>: View {
     @ObservedObject var source: Source
 
     @State var lastUpdated = Date()
-    @State var loading: Bool = false
 
     @Binding var dataInitiallyLoaded: Bool
+    
+    var buttonDisabled: Bool {
+        switch source.state {
+        case .loading:
+            return true
+        default:
+            return false
+        }
+    }
         
     @ViewBuilder
     var body: some View {
@@ -23,19 +31,13 @@ struct RefreshButtonView<Source: LoadableObject>: View {
         }) {
             if dataInitiallyLoaded {
                 VStack {
-                    switch source.state {
-                    case .loading, .idle:
-                        Image(systemName: "arrow.2.circlepath")
-                            .rotationEffect(.degrees(360.0))
-                            .animation(Animation.linear(duration: 10).repeatForever(autoreverses: false))
-                    default:
-                        Image(systemName: "arrow.2.circlepath")
-                    }
+                    Image(systemName: "arrow.2.circlepath")
                     Spacer()
                     Text(lastUpdated.shortFormat())
                         .font(.system(size: 8, weight: .light, design: .default))
                 }
             }
         }
+        .disabled(buttonDisabled)
     }
 }

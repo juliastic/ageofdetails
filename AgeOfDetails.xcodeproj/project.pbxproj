@@ -39,6 +39,8 @@
 		C15DD943256EE97F00775766 /* LoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DD942256EE97F00775766 /* LoadingState.swift */; };
 		C15DD948256EEA1C00775766 /* LoadableObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DD947256EEA1C00775766 /* LoadableObject.swift */; };
 		C15DD94D256EEA3900775766 /* AsyncContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DD94C256EEA3900775766 /* AsyncContentView.swift */; };
+		C15DD9682570E93600775766 /* RatingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DD9672570E93600775766 /* RatingsView.swift */; };
+		C15DD9732571259F00775766 /* LeaderboardRating.swift in Sources */ = {isa = PBXBuildFile; fileRef = C15DD9722571259F00775766 /* LeaderboardRating.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,8 @@
 		C15DD942256EE97F00775766 /* LoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingState.swift; sourceTree = "<group>"; };
 		C15DD947256EEA1C00775766 /* LoadableObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadableObject.swift; sourceTree = "<group>"; };
 		C15DD94C256EEA3900775766 /* AsyncContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncContentView.swift; sourceTree = "<group>"; };
+		C15DD9672570E93600775766 /* RatingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingsView.swift; sourceTree = "<group>"; };
+		C15DD9722571259F00775766 /* LeaderboardRating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardRating.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,6 +216,7 @@
 				C15DD906256D0AAC00775766 /* GameStats.swift */,
 				C15DD90E256D0D9500775766 /* AppStats.swift */,
 				C15DD91B256D11BE00775766 /* PlayerStats.swift */,
+				C15DD9722571259F00775766 /* LeaderboardRating.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -226,6 +231,7 @@
 				C12AD4F7256A444E00D21B26 /* DataChartLine.swift */,
 				C15DD920256D194500775766 /* RefreshButtonView.swift */,
 				C15DD94C256EEA3900775766 /* AsyncContentView.swift */,
+				C15DD9672570E93600775766 /* RatingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -397,6 +403,7 @@
 				C141BE82256B94AC002DC7EE /* CellViewModifier.swift in Sources */,
 				C15DD921256D194500775766 /* RefreshButtonView.swift in Sources */,
 				C15DD914256D0E9000775766 /* AppStatsViewModel.swift in Sources */,
+				C15DD9682570E93600775766 /* RatingsView.swift in Sources */,
 				C110FEE425610E54002C56EE /* Player.swift in Sources */,
 				C15DD948256EEA1C00775766 /* LoadableObject.swift in Sources */,
 				C11BE091256BE56E0018B3B2 /* Rating.swift in Sources */,
@@ -407,6 +414,7 @@
 				C12AD4DB25641BE200D21B26 /* StringExtensions.swift in Sources */,
 				C12AD4FD256A590D00D21B26 /* PathExtensions.swift in Sources */,
 				C12AD4F8256A444E00D21B26 /* DataChartLine.swift in Sources */,
+				C15DD9732571259F00775766 /* LeaderboardRating.swift in Sources */,
 				C110FEDC25610E49002C56EE /* LeaderboardData.swift in Sources */,
 				C12AD4E3256811C400D21B26 /* PlayerMatchHistory.swift in Sources */,
 				C12AD4E8256838BC00D21B26 /* MatchPlayer.swift in Sources */,

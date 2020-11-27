@@ -34,7 +34,6 @@ struct LeaderboardMainView: View {
                     AsyncContentView(source: viewModel) { appStats in
                         Text("Online: \(appStats.lastInGameValue().0)")
                             .font(.system(size: 12, weight: .light, design: .default))
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
                             .onAppear {
                                 dataInitiallyLoaded = true
                             }

@@ -35,22 +35,7 @@ struct PlayerDetailView: View {
                         .padding(EdgeInsets(top: 2, leading: 10, bottom: 0, trailing: 0))
                         .font(.system(size: 15, weight: .light, design: .default))
                         AsyncContentView(source: viewModel, frame: .constant(CGRect(x: 0, y: 0, width: geometry.size.width, height: geometry.size.height))) { ratings in
-                            if ratings.isEmpty {
-                                Text("No recent ratings have been found")
-                                    .font(.system(size: 20, weight: .bold, design: .default))
-                            } else {
-                                Text("Rating History")
-                                    .font(.system(size: 20, weight: .bold, design: .default))
-                                    .padding()
-                                Text("Last played game: " + Date(timeIntervalSince1970: viewModel.ratingHistory[0].timestamp).shortFormat())
-                                    .font(.system(size: 15, weight: .light, design: .default))
-                                    .padding(EdgeInsets(top: 0, leading: 10, bottom: 0, trailing: 0))
-                                GeometryReader { reader in
-                                    DataChartLine(data: viewModel.mappedRatings, frame: .constant(CGRect(x: 0, y: 0, width: reader.frame(in: .local).width - 60, height: reader.frame(in: .local).height - 20)))
-                                }
-                                .frame(width: geometry.frame(in: .local).size.width, height: 250)
-                                .padding(.horizontal)
-                            }
+                            RatingsView(viewModel: viewModel, ratings: ratings, geometry: geometry)
                         }
                     }
                     .navigationBarTitle(viewModel.player.name)
