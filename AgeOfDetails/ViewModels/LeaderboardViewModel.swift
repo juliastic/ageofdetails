@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 class LeaderboardViewModel: LoadableObject {
-    @Published var state: LoadingState<LeaderboardData> = .idle
+    @Published private(set) var state: LoadingState<LeaderboardData> = .idle
 
     var publisher: AnyPublisher<LeaderboardData, AoENetError>?
     private var cancellable: AnyCancellable?

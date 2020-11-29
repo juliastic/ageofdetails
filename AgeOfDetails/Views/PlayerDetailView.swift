@@ -34,8 +34,8 @@ struct PlayerDetailView: View {
                         }
                         .padding(EdgeInsets(top: 2, leading: 10, bottom: 0, trailing: 0))
                         .font(.system(size: 15, weight: .light, design: .default))
-                        AsyncContentView(source: viewModel, frame: .constant(CGRect(x: 0, y: 0, width: geometry.size.width, height: geometry.size.height))) { ratings in
-                            RatingsView(viewModel: viewModel, ratings: ratings, geometry: geometry)
+                        AsyncContentView(source: viewModel, frame: .constant(CGRect(x: 0, y: 0, width: geometry.size.width, height: geometry.size.height))) { _ in
+                            RatingsView(viewModel: viewModel, geometry: geometry)
                         }
                     }
                     .navigationBarTitle(viewModel.player.name)

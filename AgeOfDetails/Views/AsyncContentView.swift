@@ -8,7 +8,6 @@
 import SwiftUI
 import Combine
 
-
 // Inspired by https://www.swiftbysundell.com/articles/handling-loading-states-in-swiftui/
 struct AsyncContentView<Source: LoadableObject, Content: View>: View {
     @ObservedObject var source: Source

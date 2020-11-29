@@ -9,8 +9,9 @@ import Foundation
 import Combine
 
 class PlayerViewModel: LoadableObject, Identifiable {
-    @Published var state: LoadingState<[Rating]> = .idle
-    @Published var multipleLeaderboardRatings: [LeaderboardRating] = []
+    @Published private(set) var state: LoadingState<[Rating]> = .idle
+    @Published private(set) var multipleLeaderboardRatings: [LeaderboardRating] = []
+    @Published private(set) var activeLeaderboardRating: LeaderboardRating = LeaderboardRating(id: 0, ratings: [])
     
     private var publishers: [AnyPublisher<[Rating], AoENetError>] = []
     private var cancellables: [AnyCancellable] = []
@@ -35,6 +36,7 @@ class PlayerViewModel: LoadableObject, Identifiable {
           }, receiveValue: { [weak self] ratingHistory in
             guard let self = self else { return }
             if id == self.leaderboardId {
+                self.activeLeaderboardRating = LeaderboardRating(id: id, ratings: ratingHistory)
                 self.state = .loaded(ratingHistory)
             }
             self.multipleLeaderboardRatings.append(LeaderboardRating(id: id, ratings: ratingHistory))
@@ -42,8 +44,8 @@ class PlayerViewModel: LoadableObject, Identifiable {
           }))
     }
     
-    func ratings(for index: Int) -> [Double] {
-        return multipleLeaderboardRatings[index].mappedRatings
+    func updateActiveLeaderboard(for index: Int) {
+        activeLeaderboardRating = multipleLeaderboardRatings[index]
     }
     
     func load() {
