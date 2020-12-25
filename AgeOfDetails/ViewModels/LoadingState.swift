@@ -13,7 +13,7 @@ enum LoadingState<Value>: Equatable {
     case failed(Error)
     case loaded(Value)
     
-    public static func == (lhs: LoadingState<Value>, rhs: LoadingState<Value>) -> Bool {
+    public static func==(lhs: LoadingState<Value>, rhs: LoadingState<Value>) -> Bool {
         switch (lhs, rhs) {
         case (.idle, .idle),
              (.loading, .loading):

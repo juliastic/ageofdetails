@@ -25,15 +25,15 @@ struct DataChartLine: View {
     var body: some View {
         ZStack {
             xAxis
-                .stroke(Color.black ,style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
+                .stroke(Color.black, style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
                 .drawingGroup()
             yAxis
-                .stroke(Color.black ,style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
+                .stroke(Color.black, style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
                 .drawingGroup()
             yAxisLabels
             ratingPath
                 .trim(from: 0, to: progress)
-                .stroke(Color.green ,style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
+                .stroke(Color.green, style: StrokeStyle(lineWidth: 2, lineJoin: .bevel))
                 .drawingGroup()
                 .animation(.easeIn(duration: 5))
                 .onAppear {
@@ -43,23 +43,23 @@ struct DataChartLine: View {
                     })
                 }
             if showChartInformation {
-                ForEach(0..<data.count, id: \.self) { i in
+                ForEach(0..<data.count, id: \.self) { index in
                     ZStack {
-                        if !(i == 0 && (data[i] == data.min() ?? 0 || data[i] == data.max() ?? 0)) {
-                            Text("\(Int(data[i]))")
+                        if !(index == 0 && (data[index] == data.min() ?? 0 || data[index] == data.max() ?? 0)) {
+                            Text("\(Int(data[index]))")
                                 .font(.system(size: 8))
                                 .rotationEffect(.degrees(180), anchor: .center)
                                 .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
-                                .offset(x: 0, y: i % 2 == 0 ? 10 : -10)
+                                .offset(x: 0, y: index % 2 == 0 ? 10 : -10)
                         }
                         Circle()
                             .fill(Color.black)
                             .frame(width: 5, height: 5)
                     }
-                    .position(calculateCirclePosition(for: i))
+                    .position(calculateCirclePosition(for: index))
                     .animation(Animation.easeIn(duration: 2).delay(2))
-                    if i % 2 == 0 {
-                        drawLine(for: i)
+                    if index % 2 == 0 {
+                        drawLine(for: index)
                             .stroke(style: StrokeStyle(lineWidth: 1, dash: [2]))
                             .drawingGroup()
                     }

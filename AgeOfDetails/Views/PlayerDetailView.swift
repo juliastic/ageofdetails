@@ -29,7 +29,7 @@ struct PlayerDetailView: View {
                             Text("Name: " + viewModel.player.name)
                             Text("Country: " + (viewModel.player.country ?? "").flag())
                             Text("Winrate: \(Int(winrate * 100))%")
-                            winrateView
+                            WinrateView(winrate: winrate)
                             Text("Played Games: \(viewModel.player.games)")
                         }
                         .padding(EdgeInsets(top: 2, leading: 10, bottom: 0, trailing: 0))
@@ -40,18 +40,6 @@ struct PlayerDetailView: View {
                     }
                     .navigationBarTitle(viewModel.player.name)
             }
-        }
-    }
-    
-    var winrateView: some View {
-        ZStack(alignment: .leading) {
-            Rectangle()
-                .foregroundColor(Color.red)
-                .opacity(0.3)
-                .frame(width: 345.0, height: 20.0)
-            Rectangle()
-                .foregroundColor(Color.green)
-                .frame(width: 345.0 * CGFloat(winrate), height: 20.0)
         }
     }
 }

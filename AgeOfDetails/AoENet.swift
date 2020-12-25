@@ -40,8 +40,6 @@ class AoENet {
         return loadAoEMultipleData(for: Rating.self)
     }
     
-    // REFACTOR THESE METHODS
-    
     private func loadAoESingleData<T: Codable>(for data: T.Type) -> AnyPublisher<T, AoENetError> {
         return URLSession.shared.dataTaskPublisher(for: urlComponents.url!)
             .tryMap { response in
@@ -69,7 +67,7 @@ class AoENet {
             .mapError { AoENetError.map($0) }
             .eraseToAnyPublisher()
     }
-        
+    
     private func buildLeaderboardURL(start: Int, count: Int, id: Int) {
         urlComponents.path = "/api/leaderboard"
         urlComponents.queryItems = [
