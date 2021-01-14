@@ -40,7 +40,6 @@ class LeaderboardViewModel: LoadableObject {
     func resetState() {
         state = .idle
     }
-    
 }
 
 enum Constants {
