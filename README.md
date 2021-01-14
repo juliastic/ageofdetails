@@ -1,0 +1,1 @@
+This simple SwiftUI app displays leaderboard data fetched from aoe2.net.
