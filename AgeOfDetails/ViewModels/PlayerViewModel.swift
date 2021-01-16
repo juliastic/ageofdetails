@@ -13,7 +13,6 @@ class PlayerViewModel: LoadableObject, Identifiable {
     @Published private(set) var multipleLeaderboardRatings: [LeaderboardRating] = []
     @Published private(set) var activeLeaderboardRating: LeaderboardRating = LeaderboardRating(id: 0, ratings: [])
     
-    private var publishers: [AnyPublisher<[Rating], AoENetError>] = []
     private var cancellables: [AnyCancellable] = []
 
     let player: Player
@@ -25,23 +24,23 @@ class PlayerViewModel: LoadableObject, Identifiable {
     }
     
     func loadData(for id: Int) {
-        publishers.append(AoENet.instance.loadRatingHistory(for: player.steamId ?? "\(player.id)", leaderboardId: id, useSteamId: player.steamId != nil, start: 0, count: 10))
-        cancellables.append(publishers[publishers.count - 1]
+        AoENet.instance.loadRatingHistory(for: player.steamId ?? "\(player.id)", leaderboardId: id, useSteamId: player.steamId != nil, start: 0, count: 10)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] value in
-            guard let self = self else { return }
-            if case let .failure(error) = value {
+                guard let self = self else { return }
+                if case let .failure(error) = value {
                 self.state = .failed(error)
-            }
-          }, receiveValue: { [weak self] ratingHistory in
-            guard let self = self else { return }
-            if id == self.leaderboardId {
-                self.activeLeaderboardRating = LeaderboardRating(id: id, ratings: ratingHistory)
-                self.state = .loaded(ratingHistory)
-            }
-            self.multipleLeaderboardRatings.append(LeaderboardRating(id: id, ratings: ratingHistory))
-            self.multipleLeaderboardRatings.sort(by: { $0.id < $1.id })
-          }))
+                }
+            }, receiveValue: { [weak self] ratingHistory in
+                guard let self = self else { return }
+                if id == self.leaderboardId {
+                    self.activeLeaderboardRating = LeaderboardRating(id: id, ratings: ratingHistory)
+                    self.state = .loaded(ratingHistory)
+                }
+                self.multipleLeaderboardRatings.append(LeaderboardRating(id: id, ratings: ratingHistory))
+                self.multipleLeaderboardRatings.sort(by: { $0.id < $1.id })
+            })
+            .store(in: &cancellables)
     }
     
     func updateActiveLeaderboard(for index: Int) {

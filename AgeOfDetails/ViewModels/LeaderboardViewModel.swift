@@ -11,9 +11,8 @@ import Combine
 class LeaderboardViewModel: LoadableObject {
     @Published private(set) var state: LoadingState<LeaderboardData> = .idle
 
-    var publisher: AnyPublisher<LeaderboardData, AoENetError>?
-    private var cancellable: AnyCancellable?
-        
+    private var cancellables: [AnyCancellable] = []
+
     private var playerCount = 0
     let id: Int
     
@@ -23,8 +22,7 @@ class LeaderboardViewModel: LoadableObject {
     
     func load() {
         state = .loading
-        publisher = AoENet.instance.loadLeadboard(start: playerCount, count: Constants.fetch, id: id)
-        cancellable = publisher!
+        AoENet.instance.loadLeadboard(start: playerCount, count: Constants.fetch, id: id)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] value in
                 guard let self = self else { return }
@@ -35,6 +33,7 @@ class LeaderboardViewModel: LoadableObject {
                 guard let self = self else { return }
                 self.state = .loaded(leaderboard)
             })
+            .store(in: &cancellables)
     }
     
     func resetState() {
