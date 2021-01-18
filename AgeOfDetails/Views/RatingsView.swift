@@ -10,19 +10,21 @@ import SwiftUI
 struct RatingsView: View {
     @ObservedObject var viewModel: PlayerViewModel
     
+    @State var selectedId: Int
+    
     let geometry: GeometryProxy
     
     var body: some View {
-        Text(LeaderboardCategory(rawValue: viewModel.activeLeaderboardRating.id)?.name ?? "")
-            .contextMenu {
-                ForEach(LeaderboardCategory.allCases) { category in
-                    Button(action: {
-                        viewModel.updateActiveLeaderboard(for: category.id)
-                    }) {
-                        Text(category.name)
-                    }.disabled(viewModel.activeLeaderboardRating.id == category.id)
-                }
-            }.padding()
+        Picker(selection: $selectedId, label: Text("Categories")) {
+            ForEach(LeaderboardCategory.allCases, id: \.self) { category in
+                Text(category.shortenedName).tag(category.id)
+            }
+        }
+        .onChange(of: selectedId, perform: { value in
+            viewModel.updateActiveLeaderboard(for: value)
+        })
+        .frame(width: geometry.size.width)
+        .pickerStyle(SegmentedPickerStyle())
         if viewModel.activeLeaderboardRating.mappedRatings.isEmpty {
             Text("No recent ratings have been found")
                 .font(.system(size: 20, weight: .bold, design: .default))
@@ -39,6 +41,12 @@ struct RatingsView: View {
             .frame(width: geometry.frame(in: .local).size.width, height: 250)
             .padding(.horizontal)
         }
+    }
+    
+    init(viewModel: PlayerViewModel, geometry: GeometryProxy) {
+        self.viewModel = viewModel
+        self.geometry = geometry
+        self._selectedId = State(initialValue: viewModel.leaderboardId)
     }
     
 }

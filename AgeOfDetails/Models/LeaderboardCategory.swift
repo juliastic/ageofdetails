@@ -28,6 +28,16 @@ enum LeaderboardCategory: Int, CaseIterable, Identifiable {
         }
     }
     
+    var shortenedName: String {
+        switch self {
+        case .unranked: return "UNKRN"
+        case .singledeathmatch: return "DEATH"
+        case .teamdeathmatch: return "TDEATH"
+        case .singlerandommap: return "RAND"
+        case .teamrandommap: return "TRAND"
+        }
+    }
+    
     var description: String {
         switch self {
         case .unranked: return "Unkranked Fun"

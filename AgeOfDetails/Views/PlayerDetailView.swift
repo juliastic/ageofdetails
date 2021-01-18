@@ -12,11 +12,6 @@ struct PlayerDetailView: View {
     
     let winrate: Double
     
-    init(viewModel: PlayerViewModel) {
-        self.viewModel = viewModel
-        winrate = Double(viewModel.player.wins) / Double(viewModel.player.wins + viewModel.player.losses)
-    }
-    
     @ViewBuilder
     var body: some View {
         GeometryReader { geometry in
@@ -41,5 +36,10 @@ struct PlayerDetailView: View {
                     .navigationBarTitle(viewModel.player.name)
             }
         }
+    }
+    
+    init(viewModel: PlayerViewModel) {
+        self.viewModel = viewModel
+        winrate = Double(viewModel.player.wins) / Double(viewModel.player.wins + viewModel.player.losses)
     }
 }

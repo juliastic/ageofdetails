@@ -16,11 +16,6 @@ struct DataChartLine: View {
     let data: [Double]
     let padding: CGFloat = 30
     
-    init(data: [Double], frame: Binding<CGRect>) {
-        self.data = data
-        self._frame = frame
-    }
-
     @ViewBuilder
     var body: some View {
         ZStack {
@@ -144,6 +139,11 @@ struct DataChartLine: View {
             return (frame.size.height - padding) / CGFloat(max - min)
         }
         return 0
+    }
+    
+    init(data: [Double], frame: Binding<CGRect>) {
+        self.data = data
+        self._frame = frame
     }
     
     func calculateCirclePosition(for index: Int) -> CGPoint {
