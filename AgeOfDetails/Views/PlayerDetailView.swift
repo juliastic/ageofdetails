@@ -33,7 +33,7 @@ struct PlayerDetailView: View {
                             RatingsView(viewModel: viewModel, geometry: geometry)
                         }
                     }
-                    .navigationBarTitle(viewModel.player.name)
+                    .navigationTitle(viewModel.player.name)
             }
         }
     }
