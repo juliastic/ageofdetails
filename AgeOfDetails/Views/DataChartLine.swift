@@ -46,6 +46,7 @@ struct DataChartLine: View {
                                 .rotationEffect(.degrees(180), anchor: .center)
                                 .rotation3DEffect(.degrees(180), axis: (x: 0, y: 1, z: 0))
                                 .offset(x: 0, y: index % 2 == 0 ? 10 : -10)
+                                .frame(width: 110)
                         }
                         Circle()
                             .fill(Color.black)
