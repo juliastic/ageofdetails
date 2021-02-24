@@ -11,9 +11,9 @@ struct LeaderboardFilterMenuView<Source: LeaderboardViewModel>: View {
     @ObservedObject var source: Source
     
     @State private var showMenu = false
+    @State private var showAlert = false
     @State private var rangeStartString = ""
     @State private var countString = ""
-    @State private var showAlert = false
     
     @Binding var lastUpdated: Date
     
@@ -22,7 +22,7 @@ struct LeaderboardFilterMenuView<Source: LeaderboardViewModel>: View {
         case .loading:
             return true
         default:
-            return false
+            return rangeStartString.isEmpty || countString.isEmpty
         }
     }
     
@@ -53,7 +53,7 @@ struct LeaderboardFilterMenuView<Source: LeaderboardViewModel>: View {
                 Button(action: {
                     let rangeStart = Int(rangeStartString) ?? 0
                     let count = Int(countString) ?? 0
-                    showAlert = rangeStart == 0 || count == 0
+                    showAlert = rangeStart <= 0 || count <= 0
                     if !showAlert {
                         source.set(rangeStart: rangeStart, count: count)
                         source.resetState()
