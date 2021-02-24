@@ -10,10 +10,9 @@ import SwiftUI
 struct RefreshButtonView<Source: LoadableObject>: View {
     @ObservedObject var source: Source
 
-    @State var lastUpdated = Date()
-
     @Binding var dataInitiallyLoaded: Bool
-    
+    @Binding var lastUpdated: Date
+        
     var buttonDisabled: Bool {
         switch source.state {
         case .loading:
@@ -40,4 +39,11 @@ struct RefreshButtonView<Source: LoadableObject>: View {
         }
         .disabled(buttonDisabled)
     }
+    
+    init(source: Source, dataInitiallyLoaded: Binding<Bool>, lastUpdated: Binding<Date> = .constant(Date())) {
+        self.source = source
+        self._dataInitiallyLoaded = dataInitiallyLoaded
+        self._lastUpdated = lastUpdated
+    }
+
 }

@@ -13,7 +13,9 @@ class LeaderboardViewModel: LoadableObject {
 
     private var cancellables: [AnyCancellable] = []
 
-    private var playerCount = 0
+    private var rangeStart = 0
+    private var count = 100
+    
     let id: Int
     
     init(id: Int) {
@@ -22,7 +24,7 @@ class LeaderboardViewModel: LoadableObject {
     
     func load() {
         state = .loading
-        AoENet.instance.loadLeadboard(start: playerCount, count: Constants.fetch, id: id)
+        AoENet.instance.loadLeadboard(start: rangeStart, count: count, id: id)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] value in
                 guard let self = self else { return }
@@ -36,11 +38,13 @@ class LeaderboardViewModel: LoadableObject {
             .store(in: &cancellables)
     }
     
+    func set(rangeStart: Int, count: Int) {
+        guard count > 0 && rangeStart > 0 else { return }
+        self.rangeStart = rangeStart
+        self.count = count
+    }
+    
     func resetState() {
         state = .idle
     }
-}
-
-enum Constants {
-    static let fetch = 100
 }

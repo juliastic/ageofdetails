@@ -56,8 +56,7 @@ struct LeaderboardMainView: View {
                                     RoundedRectangle(cornerRadius: 10)
                                         .stroke(Color.black, lineWidth: 1))
                                 Divider()
-                                    .background(Color.black)
-                                    .padding(EdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10))
+                                    .modifier(DividerModifier())
                             }
                         }
                     }
